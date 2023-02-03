@@ -288,7 +288,7 @@ export default class BlocksAPI extends Module {
    * @param id - id of the block to update
    * @param data - the new data
    */
-  public update = (id: string, data: BlockToolData): void => {
+  public update = (id: string, data: BlockToolData, tool: string): void => {
     const { BlockManager } = this.Editor;
     const block = BlockManager.getBlockById(id);
 
@@ -302,8 +302,8 @@ export default class BlocksAPI extends Module {
 
     BlockManager.insert({
       id: block.id,
-      tool: block.name,
-      data,
+      tool: tool ? tool : block.name,
+      data: data ? data : block.data,
       index: blockIndex,
       replace: true,
       tunes: block.tunes,
