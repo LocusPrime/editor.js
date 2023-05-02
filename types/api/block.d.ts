@@ -31,6 +31,11 @@ export interface BlockAPI {
   readonly isEmpty: boolean;
 
   /**
+   * Data in block
+   */
+  readonly data: BlockToolData;
+
+  /**
    * True if Block is selected with Cross-Block selection
    */
   readonly selected: boolean;

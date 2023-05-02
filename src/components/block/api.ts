@@ -31,6 +31,18 @@ function BlockAPI(
     },
 
     /**
+     * get Block data
+     *
+     * @returns {BlockToolData} get to data
+     */
+     get data(): BlockToolData {
+      const dataT = block.data.then(reponse =>{
+        return reponse
+      })
+      return dataT;
+    },
+
+    /**
      * Tool config passed on Editor's initialization
      *
      * @returns {ToolConfig}
