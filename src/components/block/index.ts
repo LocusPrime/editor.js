@@ -103,6 +103,8 @@ export default class Block extends EventsDispatcher<BlockEvents> {
   public static get CSS(): { [name: string]: string } {
     return {
       wrapper: 'ce-block',
+      card: 'ce-card',
+      block: 'ce-block-default',
       wrapperStretched: 'ce-block--stretched',
       content: 'ce-block__content',
       focused: 'ce-block--focused',
@@ -115,6 +117,8 @@ export default class Block extends EventsDispatcher<BlockEvents> {
    * Block unique identifier
    */
   public id: string;
+
+  public dataBlock: any;
 
   /**
    * Block Tool`s name
@@ -263,8 +267,8 @@ export default class Block extends EventsDispatcher<BlockEvents> {
     this.settings = tool.settings;
     this.config = tool.settings.config || {};
     this.api = api;
+    this.dataBlock = data;
     this.blockAPI = new BlockAPI(this);
-
     this.mutationObserver = new MutationObserver(this.didMutated);
 
     this.tool = tool;
@@ -785,7 +789,15 @@ export default class Block extends EventsDispatcher<BlockEvents> {
    * @returns {HTMLDivElement}
    */
   private compose(): HTMLDivElement {
-    const wrapper = $.make('div', Block.CSS.wrapper) as HTMLDivElement,
+    const listClass = [Block.CSS.wrapper];
+    let attributes = {};
+    if(this.name === 'page' && this.dataBlock.type === 'card' && this.dataBlock.width){
+      listClass.push(Block.CSS.card);
+    }
+    else{
+      listClass.push(Block.CSS.block);
+    }
+    const wrapper = $.make('div', listClass, attributes) as HTMLDivElement,
         contentNode = $.make('div', Block.CSS.content),
         pluginsContent = this.toolInstance.render();
 
@@ -814,6 +826,8 @@ export default class Block extends EventsDispatcher<BlockEvents> {
       });
 
     wrapper.appendChild(wrappedContentNode);
+    console.log('wrapper');
+    console.log(wrapper);
 
     return wrapper;
   }

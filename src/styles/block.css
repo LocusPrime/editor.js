@@ -39,8 +39,8 @@
 
   &__content {
     position: relative;
-    max-width: var(--content-width);
-    margin: 0 auto;
+    /**max-width: var(--content-width);*/
+    margin: 0;
     transition: background-color 150ms ease;
   }
 
@@ -88,6 +88,14 @@
   i {
     font-style: italic;
   }
+}
+
+.ce-block-default {
+  width: 100%;
+}
+
+.ce-card {
+  width: 32%;
 }
 
 .codex-editor--narrow .ce-block--focused {
