@@ -131,6 +131,7 @@ export default class Toolbar extends Module<ToolbarNodes> {
       content: 'ce-toolbar__content',
       actions: 'ce-toolbar__actions',
       actionsOpened: 'ce-toolbar__actions--opened',
+      actionsOccult: 'ce-toolbar__actions--occult',
 
       toolbarOpened: 'ce-toolbar--opened',
       openedToolboxHolderModifier: 'codex-editor--toolbox-opened',
@@ -182,14 +183,20 @@ export default class Toolbar extends Module<ToolbarNodes> {
   /**
    * Block actions appearance manipulations
    */
-  private get blockActions(): { hide: () => void; show: () => void } {
+  private get blockActions(): { hide: () => void; show: () => void, occult: () => void } {
     return {
       hide: (): void => {
         this.nodes.actions.classList.remove(this.CSS.actionsOpened);
+        this.nodes.actions.classList.remove(this.CSS.actionsOccult);
       },
       show: (): void => {
+        this.nodes.actions.classList.remove(this.CSS.actionsOccult);
         this.nodes.actions.classList.add(this.CSS.actionsOpened);
       },
+      occult: (): void => {
+        this.nodes.actions.classList.remove(this.CSS.actionsOccult);
+        this.nodes.actions.classList.add(this.CSS.actionsOccult);
+      }
     };
   }
 
@@ -302,10 +309,15 @@ export default class Toolbar extends Module<ToolbarNodes> {
   private open(withBlockActions = true): void {
     _.delay(() => {
       this.nodes.wrapper.classList.add(this.CSS.toolbarOpened);
+      const statusTool = ['image', 'header','pageBreak'].includes(this.hoveredBlock.name)
 
-      if (withBlockActions) {
+      if (withBlockActions &&  !statusTool) {
         this.blockActions.show();
-      } else {
+      }
+      else if(statusTool){
+        this.blockActions.occult();
+      } 
+      else {
         this.blockActions.hide();
       }
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
