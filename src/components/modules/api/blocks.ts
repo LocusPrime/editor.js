@@ -26,6 +26,7 @@ export default class BlocksAPI extends Module {
       getBlockByIndex: (index: number): BlockAPIInterface | undefined => this.getBlockByIndex(index),
       getById: (id: string): BlockAPIInterface | null => this.getById(id),
       getCurrentBlockIndex: (): number => this.getCurrentBlockIndex(),
+      getBlocksSelected: (): BlockAPIInterface[] => this.getBlocksSelected(),
       getBlockIndex: (id: string): number => this.getBlockIndex(id),
       getBlocksCount: (): number => this.getBlocksCount(),
       stretchBlock: (index: number, status = true): void => this.stretchBlock(index, status),
@@ -52,6 +53,12 @@ export default class BlocksAPI extends Module {
    */
   public getCurrentBlockIndex(): number {
     return this.Editor.BlockManager.currentBlockIndex;
+  }
+
+  public getBlocksSelected(): BlockAPIInterface[] {
+    return this.Editor.BlockManager.blocks
+      .filter((block: Block) => block.selected)
+      .map((block: Block) => new BlockAPI(block));
   }
 
   /**

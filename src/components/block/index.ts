@@ -826,8 +826,6 @@ export default class Block extends EventsDispatcher<BlockEvents> {
       });
 
     wrapper.appendChild(wrappedContentNode);
-    console.log('wrapper');
-    console.log(wrapper);
 
     return wrapper;
   }
