@@ -66,6 +66,8 @@ export interface Blocks {
    */
   getCurrentBlockIndex(): number;
 
+  getBlocksSelected(): BlockAPI[];
+
   /**
    * Returns the index of Block by id;
    */

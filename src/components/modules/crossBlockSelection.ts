@@ -23,7 +23,8 @@ export default class CrossBlockSelection extends Module {
    * @returns {Promise}
    */
   public async prepare(): Promise<void> {
-    this.listeners.on(document, 'mousedown', (event: MouseEvent) => {
+    const blockEditor = document.getElementsByClassName('codex-editor')[0] as HTMLElement;
+    this.listeners.on(blockEditor, 'mousedown', (event: MouseEvent) => {
       this.enableCrossBlockSelection(event);
     });
   }
