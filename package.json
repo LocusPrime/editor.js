@@ -1,6 +1,6 @@
 {
   "name": "@editorjs/adation",
-  "version": "2.26.5",
+  "version": "2.26.6",
   "description": "Editor.js — Native JS, based on API and Open Source",
   "main": "dist/editor.js",
   "types": "./types/index.d.ts",
