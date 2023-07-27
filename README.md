@@ -24,6 +24,7 @@
   - [ ] Implement Tools API changes
   - [ ] Implement Server and communication
   - [ ] Update basic tools to fit the new API
+  - [ ] Test version
 
 - Unified Toolbox
   - [x] Block Tunes moved left [#1815](https://github.com/codex-team/editor.js/pull/1815)
