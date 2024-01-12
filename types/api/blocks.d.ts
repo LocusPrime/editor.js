@@ -68,6 +68,12 @@ export interface Blocks {
 
   getBlocksSelected(): BlockAPI[];
 
+  selectedAllBlocks(): void;
+
+  clearSelectionAllBlocks(): void;
+
+  selectedBlocksByIndex(id: number): void;
+
   /**
    * Returns the index of Block by id;
    */
