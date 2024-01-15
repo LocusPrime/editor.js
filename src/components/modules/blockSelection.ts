@@ -445,7 +445,7 @@ export default class BlockSelection extends Module {
    * Select All Blocks
    * Each Block has selected setter that makes Block copyable
    */
-  private selectAllBlocks(): void {
+  public selectAllBlocks(): void {
     /**
      * Save selection
      * Will be restored when closeSelection fired
