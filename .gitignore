@@ -16,3 +16,4 @@ test/cypress/videos
 
 coverage/
 .nyc_output/
+dist/

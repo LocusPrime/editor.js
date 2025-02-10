@@ -2,8 +2,7 @@
 /**
  * Use external module CodeX Tooltip
  */
-import CodeXTooltips from 'codex-tooltip';
-import type { TooltipOptions, TooltipContent } from 'codex-tooltip/types';
+import CodeXTooltips, { TooltipContent, TooltipOptions } from 'codex-tooltip';
 
 /**
  * Tooltip
@@ -17,13 +16,6 @@ export default class Tooltip {
    * @see https://github.com/codex-team/codex.tooltips
    */
   private lib: CodeXTooltips = new CodeXTooltips();
-
-  /**
-   * Release the library
-   */
-  public destroy(): void {
-    this.lib.destroy();
-  }
 
   /**
    * Shows tooltip on element with passed HTML content

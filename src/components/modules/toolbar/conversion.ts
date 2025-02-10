@@ -330,7 +330,7 @@ export default class ConversionToolbar extends Module<ConversionToolbarNodes> {
     });
 
     this.listeners.on(tool, 'click', async () => {
-      await this.replaceWithBlock(toolName, toolboxItem.data);
+      await this.replaceWithBlock(toolName);
     });
   }
 

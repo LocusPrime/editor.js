@@ -91,9 +91,9 @@ export default class Module<T extends ModuleNodes = Record<string, HTMLElement>>
 
   /**
    * @class
-   * @param options - Module options
-   * @param options.config - Module config
-   * @param options.eventsDispatcher - Common event bus
+   *
+   * @param {EditorConfig} config - Editor's config
+   * @param {EventsDispatcher} eventsDispatcher - Editor's event dispatcher
    */
   constructor({ config, eventsDispatcher }: ModuleConfig) {
     if (new.target === Module) {

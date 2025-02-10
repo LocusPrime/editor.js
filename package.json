@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "clear": "rimraf dist && mkdirp dist",
-    "build": "yarn clear && yarn build:webpack:prod",
-    "build:dev": "yarn clear && yarn build:webpack:dev",
+    "build": "yarn clear && yarn svg && yarn build:webpack:prod",
+    "build:dev": "yarn clear && yarn svg && yarn build:webpack:dev",
     "build:webpack:dev": "webpack --mode development --progress --display-error-details --display-entrypoints --watch",
     "build:webpack:prod": "webpack --mode production",
     "lint": "eslint src/ --ext .ts && yarn lint:tests",
@@ -22,6 +22,7 @@
     "lint:fix": "eslint src/ --ext .ts --fix",
     "lint:tests": "eslint test/ --ext .ts",
     "ci:pull_paragraph": "git submodule update --init ./src/tools/paragraph",
+    "svg": "svg-sprite-generate -d src/assets/ -o dist/sprite.svg",
     "pull_tools": "git submodule update --init --recursive",
     "_tools:checkout": "git submodule foreach \"git checkout master || git checkout main\"",
     "_tools:pull": "git submodule foreach git pull",

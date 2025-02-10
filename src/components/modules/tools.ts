@@ -5,15 +5,9 @@ import { SanitizerConfig, ToolConfig, ToolConstructable, ToolSettings } from '..
 import BoldInlineTool from '../inline-tools/inline-tool-bold';
 import ItalicInlineTool from '../inline-tools/inline-tool-italic';
 import LinkInlineTool from '../inline-tools/inline-tool-link';
-import Stub from '../../tools/stub';
-import ToolsFactory from '../tools/factory';
-import InlineTool from '../tools/inline';
-import BlockTool from '../tools/block';
-import BlockTune from '../tools/tune';
-import MoveDownTune from '../block-tunes/block-tune-move-down';
-import DeleteTune from '../block-tunes/block-tune-delete';
-import MoveUpTune from '../block-tunes/block-tune-move-up';
-import ToolsCollection from '../tools/collection';
+import Stub from '../tools/stub';
+import { ModuleConfig } from '../../types-internal/module-config';
+import EventsDispatcher from '../utils/events';
 
 /**
  * @module Editor.js Tools Submodule
@@ -95,8 +89,49 @@ export default class Tools extends Module {
   /**
    * Returns internal tools
    */
-  public get internal(): ToolsCollection {
-    return this.available.internalTools;
+  private readonly toolsSettings: { [name: string]: ToolSettings } = {};
+
+  /**
+   * Cache for the prepared inline tools
+   *
+   * @type {null|object}
+   * @private
+   */
+  private _inlineTools: { [name: string]: ToolConstructable } = {};
+
+  /**
+   * @class
+   *
+   * @param {EditorConfig} config - Editor's configuration
+   * @param {EventsDispatcher} eventsDispatcher - Editor's event dispatcher
+   */
+  constructor({ config, eventsDispatcher }: ModuleConfig) {
+    super({
+      config,
+      eventsDispatcher,
+    });
+
+    this.toolsClasses = {};
+
+    this.toolsSettings = {};
+
+    /**
+     * Available tools list
+     * {name: Class, ...}
+     *
+     * @type {object}
+     */
+    this.toolsAvailable = {};
+
+    /**
+     * Tools that rejected a prepare method
+     * {name: Class, ... }
+     *
+     * @type {object}
+     */
+    this.toolsUnavailable = {};
+
+    this._inlineTools = null;
   }
 
   /**

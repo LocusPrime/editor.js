@@ -185,7 +185,7 @@ export default class RectangleSelection extends Module {
       this.processMouseDown(mouseEvent);
     }, false);
 
-    this.listeners.on(document.body, 'mousemove', _.throttle((mouseEvent: MouseEvent) => {
+    this.listeners.on(document.body, 'mousemove', (mouseEvent: MouseEvent) => {
       this.processMouseMove(mouseEvent);
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     }, 10), {
@@ -196,7 +196,7 @@ export default class RectangleSelection extends Module {
       this.processMouseLeave();
     });
 
-    this.listeners.on(window, 'scroll', _.throttle((mouseEvent: MouseEvent) => {
+    this.listeners.on(window, 'scroll', (mouseEvent: MouseEvent) => {
       this.processScroll(mouseEvent);
     // eslint-disable-next-line @typescript-eslint/no-magic-numbers
     }, 10), {

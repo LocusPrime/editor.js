@@ -54,17 +54,11 @@ export type TunesMenuConfigItem = PopoverItem & {
 }
 
 /**
- * Tool may specify its tunes configuration
- * that can contain either one or multiple entries
- */
-export type TunesMenuConfig = TunesMenuConfigItem | TunesMenuConfigItem[];
-
-/**
  * Object passed to the Tool's constructor by {@link EditorConfig#tools}
  *
  * @template Config - the structure describing a config object supported by the tool
  */
-export interface ExternalToolSettings<Config extends object = any> {
+export interface ToolSettings <Config extends object = any> {
 
   /**
    * Tool's class

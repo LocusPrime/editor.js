@@ -162,6 +162,10 @@ export default class BlockSettings extends Module<BlockSettingsNodes> {
       this.Editor.BlockManager.currentBlock.selected = false;
     }
 
+    /** Clear settings */
+    this.nodes.toolSettings.innerHTML = '';
+    this.nodes.defaultSettings.innerHTML = '';
+
     /** Tell to subscribers that block settings is closed */
     this.eventsDispatcher.emit(this.events.closed);
 

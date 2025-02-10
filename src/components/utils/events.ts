@@ -1,5 +1,3 @@
-import { isEmpty } from '../utils';
-
 /**
  * @class EventDispatcher
  *
@@ -7,11 +5,12 @@ import { isEmpty } from '../utils';
  *    - {Function} on - appends subscriber to the event. If event doesn't exist - creates new one
  *    - {Function} emit - fires all subscribers with data
  *    - {Function off - unsubscribes callback
+ *
  * @version 1.0.0
  * @typedef {Events} Events
  * @property {object} subscribers - all subscribers grouped by event name
  */
-export default class EventsDispatcher<Events extends string = string> {
+export default class EventsDispatcher {
   /**
    * Object with events` names as key and array of callback functions as value
    *

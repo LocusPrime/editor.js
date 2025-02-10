@@ -7,11 +7,7 @@ import Flipper from '../../flipper';
 import I18n from '../../i18n';
 import { I18nInternalNS } from '../../i18n/namespace-internal';
 import Shortcuts from '../../utils/shortcuts';
-import Tooltip from '../../utils/tooltip';
-import { ModuleConfig } from '../../../types-internal/module-config';
-import InlineTool from '../../tools/inline';
-import { CommonInternalSettings } from '../../tools/base';
-import { IconChevronDown } from '@codexteam/icons';
+import { EditorModules } from '../../../types-internal/editor-modules';
 
 /**
  * Inline Toolbar elements
@@ -98,21 +94,35 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
   private flipper: Flipper = null;
 
   /**
-   * Tooltip utility Instance
+   * Internal inline tools: Link, Bold, Italic
    */
-  private tooltip: Tooltip;
+  private internalTools: {[name: string]: InlineToolConstructable} = {};
+
   /**
-   * @class
-   * @param moduleConfiguration - Module Configuration
-   * @param moduleConfiguration.config - Editor's config
-   * @param moduleConfiguration.eventsDispatcher - Editor's event dispatcher
+   * Editor modules setter
+   *
+   * @param {EditorModules} Editor - Editor's Modules
    */
-  constructor({ config, eventsDispatcher }: ModuleConfig) {
-    super({
-      config,
-      eventsDispatcher,
-    });
-    this.tooltip = new Tooltip();
+  public set state(Editor: EditorModules) {
+    this.Editor = Editor;
+
+    const { Tools } = Editor;
+
+    /**
+     * Set internal inline tools
+     */
+    Object
+      .entries(Tools.internalTools)
+      .filter(([, toolClass]: [string, ToolConstructable | ToolSettings]) => {
+        if (_.isFunction(toolClass)) {
+          return toolClass[Tools.INTERNAL_SETTINGS.IS_INLINE];
+        }
+
+        return (toolClass as ToolSettings).class[Tools.INTERNAL_SETTINGS.IS_INLINE];
+      })
+      .map(([name, toolClass]: [string, InlineToolConstructable | ToolSettings]) => {
+        this.internalTools[name] = _.isFunction(toolClass) ? toolClass : (toolClass as ToolSettings).class;
+      });
   }
 
   /**
@@ -538,9 +548,13 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
    *
    * @param {InlineTool} tool - InlineTool object
    */
-  private addTool(tool: InlineTool): void {
-    const instance = tool.create();
-    const button = instance.render();
+  private addTool(toolName: string, tool: InlineTool): void {
+    const {
+      Tools,
+      Tooltip,
+    } = this.Editor;
+
+    const button = tool.render();
 
     if (!button) {
       _.log('Render method must return an instance of Node', 'warn', tool.name);
@@ -559,11 +573,11 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
     }
 
     this.listeners.on(button, 'click', (event) => {
-      this.toolClicked(instance);
+      this.toolClicked(tool);
       event.preventDefault();
     });
 
-    const shortcut = this.getToolShortcut(tool.name);
+    const shortcut = this.getToolShortcut(toolName);
 
     if (shortcut) {
       try {
@@ -627,12 +641,41 @@ export default class InlineToolbar extends Module<InlineToolbarNodes> {
   }
 
   /**
+   * Get shortcut name for tool
+   *
+   * @param toolName — Tool name
+   */
+  private getToolShortcut(toolName): string | void {
+    const { Tools } = this.Editor;
+
+    /**
+     * Enable shortcuts
+     * Ignore tool that doesn't have shortcut or empty string
+     */
+    const toolSettings = Tools.getToolSettings(toolName);
+    const tool = this.toolsInstances.get(toolName);
+
+    /**
+     * 1) For internal tools, check public getter 'shortcut'
+     * 2) For external tools, check tool's settings
+     * 3) If shortcut is not set in settings, check Tool's public property
+     */
+    if (Object.keys(this.internalTools).includes(toolName)) {
+      return this.inlineTools[toolName][Tools.INTERNAL_SETTINGS.SHORTCUT];
+    } else if (toolSettings && toolSettings[Tools.USER_SETTINGS.SHORTCUT]) {
+      return toolSettings[Tools.USER_SETTINGS.SHORTCUT];
+    } else if (tool.shortcut) {
+      return tool.shortcut;
+    }
+  }
+
+  /**
    * Enable Tool shortcut with Editor Shortcuts Module
    *
    * @param {InlineTool} tool - Tool instance
    * @param {string} shortcut - shortcut according to the ShortcutData Module format
    */
-  private enableShortcuts(tool: IInlineTool, shortcut: string): void {
+  private enableShortcuts(tool: InlineTool, shortcut: string): void {
     Shortcuts.add({
       name: shortcut,
       handler: (event) => {

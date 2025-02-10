@@ -390,7 +390,7 @@ export default class Caret extends Module {
    * @returns {boolean}
    */
   public navigateNext(): boolean {
-    const { BlockManager } = this.Editor;
+    const { BlockManager, Tools } = this.Editor;
     const { currentBlock, nextContentfulBlock } = BlockManager;
     const { nextInput } = currentBlock;
     const isAtEnd = this.isAtEnd;

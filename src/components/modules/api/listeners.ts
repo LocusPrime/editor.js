@@ -27,8 +27,8 @@ export default class ListenersAPI extends Module {
    * @param {() => void} handler - event handler
    * @param {boolean} useCapture - capture event or not
    */
-  public on(element: HTMLElement, eventType: string, handler: () => void, useCapture?: boolean): string {
-    return this.listeners.on(element, eventType, handler, useCapture);
+  public on(element: HTMLElement, eventType: string, handler: () => void, useCapture?: boolean): void {
+    this.listeners.on(element, eventType, handler, useCapture);
   }
 
   /**
@@ -41,14 +41,5 @@ export default class ListenersAPI extends Module {
    */
   public off(element: Element, eventType: string, handler: () => void, useCapture?: boolean): void {
     this.listeners.off(element, eventType, handler, useCapture);
-  }
-
-  /**
-   * Removes DOM listener by the listener id
-   *
-   * @param id - id of the listener to remove
-   */
-  public offById(id: string): void {
-    this.listeners.offById(id);
   }
 }
